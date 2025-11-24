@@ -1,75 +1,68 @@
+import java.util.ArrayList;
 import java.util.Scanner;
 
-public class ScientificCalculator {
+public class StudentGradeTracker {
 
     public static void main(String[] args) {
+
         Scanner sc = new Scanner(System.in);
 
+        ArrayList<String> studentNames = new ArrayList<>();
+        ArrayList<Integer> studentGrades = new ArrayList<>();
+
+        System.out.println("===== Student Grade Tracker =====");
+
         while (true) {
-            System.out.println("\n===== SCIENTIFIC CALCULATOR =====");
-            System.out.println("1. Addition");
-            System.out.println("2. Subtraction");
-            System.out.println("3. Multiplication");
-            System.out.println("4. Division");
-            System.out.println("5. Power (x^n)");
-            System.out.println("6. Square Root");
-            System.out.println("7. Sin");
-            System.out.println("8. Cos");
-            System.out.println("9. Tan");
-            System.out.println("10. Log (base 10)");
-            System.out.println("11. Natural Log (ln)");
-            System.out.println("12. Modulus");
-            System.out.println("0. Exit");
-            System.out.print("Choose option: ");
+            System.out.print("Enter Student Name (or type 'exit' to finish): ");
+            String name = sc.nextLine();
 
-            int choice = sc.nextInt();
-
-            if (choice == 0) {
-                System.out.println("Exiting calculator...");
+            if (name.equalsIgnoreCase("exit")) {
                 break;
             }
 
-            double num1 = 0, num2 = 0;
+            System.out.print("Enter Grade for " + name + ": ");
+            int grade = sc.nextInt();
+            sc.nextLine();  // buffer clear
 
-            // Only some operations need two numbers
-            if (choice <= 4 || choice == 5 || choice == 12) {
-                System.out.print("Enter first number: ");
-                num1 = sc.nextDouble();
-                System.out.print("Enter second number: ");
-                num2 = sc.nextDouble();
-            } 
-            // Others need only 1 number
-            else if (choice >= 6 && choice <= 11) {
-                System.out.print("Enter number: ");
-                num1 = sc.nextDouble();
+            studentNames.add(name);
+            studentGrades.add(grade);
+
+            System.out.println("Student Added Successfully!\n");
+        }
+
+        System.out.println("\n===== Summary Report =====");
+
+        if (studentGrades.size() == 0) {
+            System.out.println("No student data available.");
+            return;
+        }
+
+        int sum = 0;
+        int highest = studentGrades.get(0);
+        int lowest = studentGrades.get(0);
+
+        for (int grade : studentGrades) {
+            sum += grade;
+            if (grade > highest) {
+                highest = grade;
             }
-
-            switch (choice) {
-                case 1 -> System.out.println("Result = " + (num1 + num2));
-                case 2 -> System.out.println("Result = " + (num1 - num2));
-                case 3 -> System.out.println("Result = " + (num1 * num2));
-                case 4 -> {
-                    if (num2 == 0) {
-                        System.out.println("Error: Cannot divide by zero!");
-                    } else {
-                        System.out.println("Result = " + (num1 / num2));
-                    }
-                }
-                case 5 -> System.out.println("Result = " + Math.pow(num1, num2));
-                case 6 -> System.out.println("Result = " + Math.sqrt(num1));
-                case 7 -> System.out.println("Result = " + Math.sin(Math.toRadians(num1)));
-                case 8 -> System.out.println("Result = " + Math.cos(Math.toRadians(num1)));
-                case 9 -> System.out.println("Result = " + Math.tan(Math.toRadians(num1)));
-                case 10 -> System.out.println("Result = " + Math.log10(num1));
-                case 11 -> System.out.println("Result = " + Math.log(num1));
-                case 12 -> System.out.println("Result = " + (num1 % num2));
-                default -> System.out.println("Invalid choice!");
+            if (grade < lowest) {
+                lowest = grade;
             }
         }
 
-        sc.close();
+        double average = (double) sum / studentGrades.size();
+
+        System.out.println("\nTotal Students: " + studentGrades.size());
+        System.out.println("Average Score: " + average);
+        System.out.println("Highest Score: " + highest);
+        System.out.println("Lowest Score: " + lowest);
+
+        System.out.println("\n----- Student Grades -----");
+        for (int i = 0; i < studentNames.size(); i++) {
+            System.out.println(studentNames.get(i) + " : " + studentGrades.get(i));
+        }
+
+        System.out.println("\n===== End of Report =====");
     }
 }
-
-
-
